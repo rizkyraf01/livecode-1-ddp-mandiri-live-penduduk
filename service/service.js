@@ -22,7 +22,6 @@ export class PopulationService {
             olahBirth = (Number(birthDate[8])+4)+birthDate[9]+birthDate[5]+birthDate[6]+birthDate[2]+birthDate[3];
           }
           let getpersonNik=(`${provinceId}${CityId}${districtId}${olahBirth}${id}`)                    
-          console.log(getpersonNik);
 
           
           if(!populationsdata.find((population)=>{
@@ -35,7 +34,6 @@ export class PopulationService {
           }else {
             reject(`nik sudah tersedia`)
           }
-          console.log(olahBirth);
             setTimeout(()=>{
                 if(population.id
                   &&population.name
