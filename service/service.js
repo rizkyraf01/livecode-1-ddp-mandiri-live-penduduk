@@ -1,15 +1,45 @@
 export class PopulationService {
     constructor() {
       this.populationArray = [];
+      this.nikArray=[];
     }
   
-    register(population) {
+    register(populationsdata,population) {
         return new Promise((resolve,reject)=>{
+          const {
+            id,
+            name,
+            gender,
+            nik,
+            birthDate,
+            placeOfBirth,
+            provinceId,
+            CityId,
+            districtId,
+          } = population;
+          let olahBirth = birthDate[8]+birthDate[9]+birthDate[5]+birthDate[6]+birthDate[2]+birthDate[3];
+          if(gender=='Perempuan'){
+            olahBirth = (Number(birthDate[8])+4)+birthDate[9]+birthDate[5]+birthDate[6]+birthDate[2]+birthDate[3];
+          }
+          let getpersonNik=(`${provinceId}${CityId}${districtId}${olahBirth}${id}`)                    
+          console.log(getpersonNik);
+
+          
+          if(!populationsdata.find((population)=>{
+            return population.nik == getpersonNik
+          })){            
+            population.nik = getpersonNik;
+            populationsdata.push(population)
+            resolve(`Data Penduduk : \n ID :${id} \n Nama Lenkap : ${name} \n NIK : ${population.nik} \n Tempat,Tanggal Lahir: ${placeOfBirth},${birthDate}`
+            );
+          }else {
+            reject(`nik sudah tersedia`)
+          }
+          console.log(olahBirth);
             setTimeout(()=>{
                 if(population.id
                   &&population.name
                   &&population.gender
-                  &&population.nik
                   &&population.birthDate
                   &&population.placeOfBirth
                   &&population.provinceId
@@ -17,14 +47,13 @@ export class PopulationService {
                   &&population.districtId)
                   {
                     this.populationArray.push(population);
-                    resolve(`Berhasil Registrasi`);
                   }else{
-                    reject(`Tidak dapat registrasi`)
+
                   }
             },5000)
         })
-    }
-  
+    }  
+
     getAll() {
       return new Promise((resolve,reject)=>{
         setTimeout(()=>{
@@ -44,9 +73,9 @@ export class PopulationService {
                return population.nik === nik;
             })
             if (getNik) {
-              resolve(getNik);
+              resolve(`Data dengan nik ${nik} ditemukan`);
             } else {
-              reject(`Buku dengan nik ${nik} ditemukan`);
+              reject(`Tidak ada data ${nik} ditemukan`);
             }
         })
       })
