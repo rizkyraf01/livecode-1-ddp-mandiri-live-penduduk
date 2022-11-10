@@ -26,10 +26,29 @@ export class PopulationService {
     }
   
     getAll() {
-      return new Promise(()=>{
-          
+      return new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+          if(this.populationArray.length==0){
+            reject(`Tidak ada data`)
+          }else{
+            resolve(this.populationArray);
+          }
+        },2000)          
       })
     }
   
-    getByNIK(nik) {}
+    getByNIK(nik) {
+      return new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            let getNik = this.populationArray.find(function(population){
+               return population.nik === nik;
+            })
+            if (getNik) {
+              resolve(getNik);
+            } else {
+              reject(`Buku dengan nik ${nik} ditemukan`);
+            }
+        })
+      })
+    }
   }
